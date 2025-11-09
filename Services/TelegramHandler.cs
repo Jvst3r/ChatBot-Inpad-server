@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using System.Diagnostics.Eventing.Reader;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 namespace Services;
@@ -10,20 +11,25 @@ public interface ITelegramBotService
 }
 public class TelegramBotService : ITelegramBotService
 {
-    private readonly TelegramBotClient telegramBotClient;
-        public Task HandleMessageAsync(Update update)
-        {
-            if (update.Message is { } message)
+    //static CancellationToken cts = new CancellationToken();
+    private static TelegramBotClient bot = new TelegramBotClient("OUR_TELEGRAM_BOT_TOKEN");
+    public Task HandleMessageAsync(Update update)
+    { 
+        if (update.Message is { } message)
         {
             var chatId = message.Chat.Id;
             var user = message.Chat.Username;
-
-
-            return Task.CompletedTask;//заглушечка
+            var messageText = message.Text;
+            if (messageText == "/start")
+            {
+                bot.SendMessage(chatId,"Бот запущен!");
+                return Task.CompletedTask;
+            }
+            throw new Exception("Невозможный запрос!");
         }
         else
         {
-            return Task.CompletedTask; //заглушечка
+            return Task.FromException(new Exception("Я не могу обработать данный запрос:("));
         }
-        }
+    }
 }

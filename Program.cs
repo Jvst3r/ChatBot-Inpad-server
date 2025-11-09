@@ -1,10 +1,13 @@
 // создаЄм builder статическим методом из класса WebApplication
+using Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //настраиваем будущее приложение
 builder.Services.AddControllers(); // добавл€ем поддержку endpoint`ов, то есть тех самых API-шек
 builder.Services.AddEndpointsApiExplorer(); // нужно дл€ работы Swagger`a
 builder.Services.AddSwaggerGen(); // добавл€ем генерацию документации с помощью Swagger
+builder.Services.AddScoped<ITelegramBotService, TelegramBotService>(); //телега
 
 
 //¬ќ“ “”“ ƒќ ѕќ—“–ќ≈Ќ»я Ё «≈ћѕЋя–ј WebApplication Ќ”∆Ќќ Ќј—“–ќ»“№ CORS,

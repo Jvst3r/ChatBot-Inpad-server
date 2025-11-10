@@ -7,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(); // добавляем поддержку endpoint`ов, то есть тех самых API-шек
 builder.Services.AddEndpointsApiExplorer(); // нужно для работы Swagger`a
 builder.Services.AddSwaggerGen(); // добавляем генерацию документации с помощью Swagger
-builder.Services.AddScoped<ITelegramBotService, TelegramBotService>(); //телега
+// builder.Services.AddScoped<ITelegramBotService,
+// TelegramBotService>(); //подключение собственного сервиса для обработки вебхуков от Телеграмма
+builder.Services.AddHostedService<PollingTelegramService>();
+builder.Services.AddScoped<ITelegramBotService,
+    PollingTelegramService>(); // подключение собственного ВРЕМЕННОГО сервиса для ЗАПРАШИВАНИЯ обновлений от Телеграмма
 
 
 //ВОТ ТУТ ДО ПОСТРОЕНИЯ ЭКЗЕМПЛЯРА WebApplication НУЖНО НАСТРОИТЬ CORS,

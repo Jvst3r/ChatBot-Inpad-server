@@ -9,17 +9,24 @@ builder.Services.AddEndpointsApiExplorer(); // нужно для работы Swagger`a
 builder.Services.AddSwaggerGen(); // добавляем генерацию документации с помощью Swagger
 // builder.Services.AddScoped<ITelegramBotService,
 // TelegramBotService>(); //подключение собственного сервиса для обработки вебхуков от Телеграмма
-builder.Services.AddHostedService<PollingTelegramService>();
-builder.Services.AddScoped<ITelegramBotService,
-    PollingTelegramService>(); // подключение собственного ВРЕМЕННОГО сервиса для ЗАПРАШИВАНИЯ обновлений от Телеграмма
 
+//builder.Services.AddScoped<ITelegramBotService, Незнаю зачем было сразу кидать все в кучу
+//    PollingTelegramService>(); // подключение собственного ВРЕМЕННОГО сервиса для ЗАПРАШИВАНИЯ обновлений от Телеграмма
+//
 
+builder.Services.AddSingleton<ITelegramBotService, TelegramBotService>();
+builder.Services.AddHostedService<TelegramBotBackgroundService>();
 //ВОТ ТУТ ДО ПОСТРОЕНИЯ ЭКЗЕМПЛЯРА WebApplication НУЖНО НАСТРОИТЬ CORS,
 //ЧТОБЫ ФРОНТ-ПРИЛОЖЕНИЕ МОГЛО РАБОТАТЬ С НАШИМ БЕКЕНД-ПРИЛОЖЕНИЕ
 
 
 //с помощью builder`a создаём экземпляр класса WebApplication (то есть наше приложение)
 var app = builder.Build();
+
+//Красивый вывод в хост
+app.MapGet("/", () => "Bot is running!");
+app.MapControllers();
+
 
 // Подключает документацию на этапе РАЗРАБОТКИ
 if (app.Environment.IsDevelopment())

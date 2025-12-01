@@ -1,5 +1,4 @@
-
-namespace Services.Models
+namespace ChatBotInpadserver.Data.Models
 {
     public class AdviceItem
     {

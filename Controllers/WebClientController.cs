@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-namespace ChatBot_Inpad_server.Controllers
+namespace ChatBotInpadserver.Controllers
 {
     [ApiController]
     [Route("api/web")]

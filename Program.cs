@@ -1,4 +1,6 @@
 // создаём builder статическим методом из класса WebApplication
+using ChatBotInpadserver.Data.DataBase;
+using Microsoft.EntityFrameworkCore;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,12 @@ builder.Services.AddEndpointsApiExplorer(); // нужно для работы Swagger`a
 builder.Services.AddSwaggerGen(); // добавляем генерацию документации с помощью Swagger
 // builder.Services.AddScoped<ITelegramBotService,
 // TelegramBotService>(); //подключение собственного сервиса для обработки вебхуков от Телеграмма
+
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 //builder.Services.AddScoped<ITelegramBotService, Незнаю зачем было сразу кидать все в кучу
 //    PollingTelegramService>(); // подключение собственного ВРЕМЕННОГО сервиса для ЗАПРАШИВАНИЯ обновлений от Телеграмма

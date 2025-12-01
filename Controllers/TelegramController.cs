@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services;
+using Telegram.Bot.Polling;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 [ApiController]
@@ -29,5 +31,43 @@ public class TelegramWebhookController : ControllerBase
         {
             return StatusCode(500);
         }
+    }
+}
+//Бот работает в данный момент от этого класса TelegramBotBackgroundService
+//TelegramWebhoolController пока оставил мб еще пригодится
+public class TelegramBotBackgroundService : BackgroundService
+{
+    private readonly TelegramBotClient _botClient;
+    private readonly ITelegramBotService _botService;
+    private readonly ILogger<TelegramBotBackgroundService> _logger;
+
+    public TelegramBotBackgroundService(
+        ITelegramBotService botService,
+        ILogger<TelegramBotBackgroundService> logger)
+    {
+        _botService = botService;
+        _logger = logger;
+        _botClient = new TelegramBotClient("Не воруй чужой код бота");
+    }
+    //тут все просто, обработка ошибок и вывод инфы о работе бота
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var receiverOptions = new ReceiverOptions();
+
+        _botClient.StartReceiving(
+            async (client, update, ct) => await _botService.HandleMessageAsync(update),
+            (client, exception, ct) =>
+            {
+                _logger.LogError(exception, "Telegram error");
+                return Task.CompletedTask;
+            },
+            receiverOptions,
+            stoppingToken
+        );
+
+        var me = await _botClient.GetMe();
+        _logger.LogInformation($"Бот @{me.Username} запущен!");
+
+        await Task.Delay(Timeout.Infinite, stoppingToken);
     }
 }

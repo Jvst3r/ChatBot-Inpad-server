@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile'; 
+import Answers from './pages/Answers'; 
+import Questions from './pages/Questions';
 import Layout from './components/Layout/Layout';
 import './App.css';
 
-// Компонент для защищенных маршрутов
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   
@@ -17,7 +19,6 @@ function ProtectedRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/login" />;
 }
 
-// Компонент для публичных маршрутов
 function PublicRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   
@@ -45,10 +46,10 @@ function AppContent() {
           <ProtectedRoute>
             <Layout>
               <Routes>
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/" element={<Dashboard />} />
-                <Route path="/users" element={<div>Ответы на вопросы - скоро</div>} />
-                <Route path="/products" element={<div>Вопросы - скоро</div>} />
-                <Route path="*" element={<div>Страница не найдена</div>} />
+                <Route path="/questions" element={<Questions />} />
+                <Route path="/answers" element={<Answers />} /> {/* Исправьте эту строку */}
               </Routes>
             </Layout>
           </ProtectedRoute>

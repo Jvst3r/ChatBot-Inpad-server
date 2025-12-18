@@ -21,18 +21,23 @@ const Login = () => {
       justifyContent: 'center', 
       alignItems: 'center', 
       height: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      background: '#cbe3f5ff'
     }}>
       <form onSubmit={handleSubmit} style={{
         background: 'white',
-        padding: '40px',
+        padding: '35px',
         borderRadius: '10px',
         boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
         width: '100%',
-        maxWidth: '400px'
+        maxWidth: '350px'  
       }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#2c3e50' }}>
-          Вход в админ-панель
+        <h2 style={{ 
+          textAlign: 'center', 
+          marginBottom: '25px', 
+          color: '#187ce1ff',
+          fontSize: '1.4rem'
+        }}>
+          Вход в систему
         </h2>
         
         {error && (
@@ -42,14 +47,20 @@ const Login = () => {
             padding: '10px',
             borderRadius: '5px',
             marginBottom: '20px',
-            textAlign: 'center'
+            textAlign: 'center',
+            fontSize: '0.9rem'
           }}>
             {error}
           </div>
         )}
         
         <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', color: '#2c3e50' }}>
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            color: '#2c3e50',
+            fontSize: '0.95rem'
+          }}>
             Email:
           </label>
           <input
@@ -60,16 +71,21 @@ const Login = () => {
             required
             style={{
               width: '100%',
-              padding: '12px',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '5px',
-              fontSize: '1rem'
+              fontSize: '0.95rem'
             }}
           />
         </div>
         
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', color: '#2c3e50' }}>
+        <div style={{ marginBottom: '25px' }}>
+          <label style={{ 
+            display: 'block', 
+            marginBottom: '8px', 
+            color: '#2c3e50',
+            fontSize: '0.95rem'
+          }}>
             Пароль:
           </label>
           <input
@@ -80,10 +96,10 @@ const Login = () => {
             required
             style={{
               width: '100%',
-              padding: '12px',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '5px',
-              fontSize: '1rem'
+              fontSize: '0.95rem'
             }}
           />
         </div>
@@ -93,29 +109,18 @@ const Login = () => {
           style={{
             width: '100%',
             padding: '12px',
-            background: '#3498db',
+            background: '#187ce1ff',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
             fontSize: '1rem',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            fontWeight: '500',
+            transition: 'background 0.3s'
           }}
         >
           Войти
         </button>
-
-        <div style={{
-          marginTop: '20px',
-          padding: '15px',
-          background: '#f8f9fa',
-          borderRadius: '5px',
-          fontSize: '0.9rem',
-          color: '#2c3e50'
-        }}>
-          <p><strong>Демо доступ:</strong></p>
-          <p>Email: admin@example.com</p>
-          <p>Пароль: admin</p>
-        </div>
       </form>
     </div>
   );

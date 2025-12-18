@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { 
+  FaUser,           // Профиль
+  FaChartBar,       // Дашборд
+  FaQuestionCircle, // Вопросы
+  FaComments,       // Ответы
+  FaSignOutAlt      // Выйти (опционально)
+} from 'react-icons/fa';
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -9,9 +16,10 @@ const Layout = ({ children }) => {
   const { user, logout } = useAuth();
 
   const menuItems = [
-    { path: '/', label: 'Дашборд', icon: '📊' },
-    { path: '/users', label: 'Ответы на вопросы', icon: '👥' },
-    { path: '/products', label: 'Вопросы', icon: '📦' },
+    { path: '/profile', label: 'Профиль', icon: <FaUser size={20} /> },
+    { path: '/', label: 'Дашборд', icon: <FaChartBar size={20} /> },
+    { path: '/questions', label: 'Вопросы', icon: <FaQuestionCircle size={20} /> },
+    { path: '/answers', label: 'Ответы', icon: <FaComments size={20} /> },
   ];
 
   const handleLogout = () => {
@@ -23,43 +31,32 @@ const Layout = ({ children }) => {
     <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f5f6fa' }}>
       {/* Sidebar */}
       <aside style={{
-        width: isSidebarOpen ? '250px' : '60px',
-        background: 'linear-gradient(180deg, #2c3e50 0%, #3498db 100%)',
-        color: 'white',
+        width: isSidebarOpen ? '300px' : '60px',
+        background: '#187ce1ff',
+        color: '#2c3e50',
         transition: 'all 0.3s ease',
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: '2px 0 10px rgba(0,0,0,0.1)'
+        boxShadow: '2px 0 15px rgba(0,0,0,0.08)',
+        borderRight: '1px solid #e1e8ed'
       }}>
         <div style={{
-          padding: '20px',
+          padding: '25px 20px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          borderBottom: '1px solid rgba(255,255,255,0.1)',
-          background: 'rgba(0,0,0,0.1)'
+          borderBottom: '2px solid rgba(255,255,255,0.3)',
+          background: '#187ce1ff'
         }}>
           <h2 style={{ 
-            fontSize: '1.2rem', 
-            fontWeight: '600',
+            fontSize: '1.5rem',
+            fontWeight: '700',
             whiteSpace: 'nowrap',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            color: '#ffffff'
           }}>
-            {isSidebarOpen && 'Admin Panel'}
+            {isSidebarOpen && 'BIM ASSISTANT'}
           </h2>
-          <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            style={{
-              background: 'rgba(255,255,255,0.1)',
-              border: 'none',
-              color: 'white',
-              cursor: 'pointer',
-              padding: '5px 10px',
-              borderRadius: '4px'
-            }}
-          >
-            {isSidebarOpen ? '◀' : '▶'}
-          </button>
         </div>
         
         <nav style={{ padding: '20px 0', flex: 1 }}>
@@ -70,16 +67,28 @@ const Layout = ({ children }) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                padding: '12px 20px',
-                color: location.pathname === item.path ? 'white' : '#ecf0f1',
+                padding: '15px 25px',
+                color: location.pathname === item.path ? '#ffffff' : 'rgba(255,255,255,0.8)',
                 textDecoration: 'none',
                 transition: 'all 0.3s',
-                borderLeft: '3px solid',
-                borderLeftColor: location.pathname === item.path ? '#3498db' : 'transparent',
-                background: location.pathname === item.path ? 'rgba(52, 152, 219, 0.2)' : 'transparent'
+                borderLeft: '4px solid',
+                borderLeftColor: location.pathname === item.path ? '#ffffff' : 'transparent',
+                background: location.pathname === item.path ? 'rgba(255,255,255,0.15)' : 'transparent',
+                fontSize: '1rem',
+                fontWeight: location.pathname === item.path ? '600' : '400',
+                margin: '5px 15px',
+                borderRadius: '6px'
               }}
             >
-              <span style={{ marginRight: '12px', fontSize: '18px' }}>{item.icon}</span>
+              <span style={{ 
+                marginRight: '15px', 
+                fontSize: '20px',
+                color: location.pathname === item.path ? '#ffffff' : 'rgba(255,255,255,0.8)',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                {item.icon}
+              </span>
               {isSidebarOpen && <span>{item.label}</span>}
             </Link>
           ))}
@@ -87,24 +96,43 @@ const Layout = ({ children }) => {
 
         {isSidebarOpen && (
           <div style={{
-            padding: '20px',
-            borderTop: '1px solid rgba(255,255,255,0.1)',
-            background: 'rgba(0,0,0,0.1)'
+            padding: '25px 20px',
+            borderTop: '2px solid rgba(255,255,255,0.3)',
+            background: '#187ce1ff'
           }}>
-            <div style={{ marginBottom: '10px' }}>
-              <strong style={{ display: 'block', fontSize: '0.9rem' }}>{user?.name}</strong>
-              <span style={{ fontSize: '0.8rem', color: '#bdc3c7' }}>{user?.email}</span>
+            <div style={{ marginBottom: '15px' }}>
+              <strong style={{ 
+                display: 'block', 
+                fontSize: '1rem',
+                color: '#ffffff',
+                marginBottom: '5px'
+              }}>
+                {user?.name}
+              </strong>
+              <span style={{ 
+                fontSize: '0.85rem', 
+                color: 'rgba(255,255,255,0.7)',
+                display: 'block'
+              }}>
+                {user?.email}
+              </span>
             </div>
             <button onClick={handleLogout} style={{
               width: '100%',
-              padding: '8px',
-              background: 'rgba(231, 76, 60, 0.2)',
-              border: '1px solid rgba(231, 76, 60, 0.3)',
-              color: '#e74c3c',
-              borderRadius: '4px',
-              cursor: 'pointer'
+              padding: '10px',
+              background: 'rgba(255,255,255,0.9)',
+              border: 'none',
+              color: '#187ce1ff',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              transition: 'all 0.3s',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
             }}>
-              Выйти
+              <FaSignOutAlt /> Выйти
             </button>
           </div>
         )}
@@ -112,22 +140,6 @@ const Layout = ({ children }) => {
 
       {/* Main Content */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <header style={{
-          background: 'white',
-          padding: '20px 30px',
-          borderBottom: '1px solid #e1e8ed',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h1 style={{ color: '#2c3e50', fontSize: '1.5rem', fontWeight: '600' }}>
-            {menuItems.find(item => item.path === location.pathname)?.label || 'Админ панель'}
-          </h1>
-          <div style={{ color: '#7f8c8d', fontSize: '0.9rem' }}>
-            Добро пожаловать, {user?.name}
-          </div>
-        </header>
         <div style={{ flex: 1, padding: '30px', background: '#f5f6fa', overflowY: 'auto' }}>
           {children}
         </div>

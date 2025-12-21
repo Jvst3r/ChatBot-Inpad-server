@@ -3,6 +3,7 @@ using Services;
 using Telegram.Bot.Polling;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using ChatBot_Inpad_server.Data;
 
 [ApiController]
 [Route("api/telegram")]
@@ -47,7 +48,7 @@ public class TelegramBotBackgroundService : BackgroundService
     {
         _botService = botService;
         _logger = logger;
-        _botClient = new TelegramBotClient("Не воруй чужой код бота");
+        _botClient = new TelegramBotClient(Secrets.TgBotToken);
     }
     //тут все просто, обработка ошибок и вывод инфы о работе бота
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

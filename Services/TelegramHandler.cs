@@ -4,6 +4,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using ChatBotInpadserver.Data.Models;
+using ChatBot_Inpad_server.Data;
 
 namespace Services;
 
@@ -22,7 +23,7 @@ public class TelegramBotService : ITelegramBotService
     public TelegramBotService(ILogger<TelegramBotService> logger)
     {
         _logger = logger;
-        _bot = new TelegramBotClient("Код для бота");
+        _bot = new TelegramBotClient(Secrets.TgBotToken);
         InitializeAdviceData();
     }
 

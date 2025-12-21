@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChatBot_Inpad_server.Data.Models
 {
     public class ChatMessage
     {
-        [Required]
+        [Key] // PK
         public int Id { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        [ForeignKey("User")] // FK - ссылка на модель User`a
+        public int UserId { get; set; } 
 
         [Required]
         public string TextMessage { get; set; }

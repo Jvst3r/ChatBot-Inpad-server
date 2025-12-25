@@ -4,12 +4,26 @@ namespace ChatBot_Inpad_server.Data.Models
 {
     public class User
     {
-        [Key] // PK - первичный ключ
+        [Key]
         public int Id { get; set; }
 
-        public string Platform { get; set; } = string.Empty; //Telegram, Revit, Web
-        public int PlatformId { get; set; } //ID на самой платформе
+        [Required]
+        [MaxLength(50)]
+        public string Platform { get; set; } = "Telegram";
 
+        [Required]
+        [MaxLength(100)]
+        public string PlatformId { get; set; } = string.Empty; 
 
+        [MaxLength(100)]
+        public string? UserName { get; set; }
+
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; 
+
+        [Required]
+        public DateTime LastActiveAt { get; set; } = DateTime.UtcNow; 
+
+        public virtual ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
     }
 }

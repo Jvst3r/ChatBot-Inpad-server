@@ -9,20 +9,35 @@ namespace ChatBot_Inpad_server.Data.Models
         public int Id { get; set; }
 
         [ForeignKey("User")] // FK - ссылка на модель User`a
-        public int UserId { get; set; } 
+        public int? UserId { get; set; } 
+
+        public virtual User? User { get; set; } //навигационное свойство
 
         [Required]
         public string TextMessage { get; set; }
 
         [Required]
-        public string BotResponse {  get; set; }
+        public string Platform { get; set; } = "Telegram";
 
         [Required]
-        public string Platfom { get; set; }
+        public bool IsFromUser { get; set; }
+
+        [ForeignKey("KnowledgeItem")]
+        public int? KnowledgeItemId { get; set; }
+
+        public virtual KnowledgeItem? KnowledgeItem { get; set; }
 
         [Required]
-        public DateTime Time { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        //для удобства метод
+        public bool IsBotMessage => !IsFromUser;
+
+        //Для логов в консоль
+        public string ToLogString()
+        {
+            return $"[{CreatedAt:HH:mm:ss}] {(IsFromUser ? "👤" : "🤖")} {TextMessage}";
+        }
 
     }
 }

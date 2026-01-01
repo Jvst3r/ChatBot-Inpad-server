@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChatBotInpadserver.Data.DTOs
+namespace ChatBotInpadserver.Data.DTOs.WebClientDTOs
 {
-
-
     public class RegisterAdminDto
     {
         [Required]

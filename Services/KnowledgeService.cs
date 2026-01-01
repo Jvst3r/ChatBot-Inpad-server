@@ -11,15 +11,15 @@ namespace ChatBotInpadServer.Services
     public class DataBaseHandler
     {
         public AppDbContext db;
-        public DataBaseHandler(AppDbContext _db) 
-        { 
-            db = _db; 
+        public DataBaseHandler(AppDbContext _db)
+        {
+            db = _db;
         }
 
         public async Task<KnowledgeItem?> GetKnowledgeItemAsync(int id)
         {
             try
-            { 
+            {
                 return await db.KnowledgeItems
                     .Include(ki => ki.ChatMessages)
                     .FirstOrDefaultAsync(ki => ki.Id == id);
@@ -28,7 +28,7 @@ namespace ChatBotInpadServer.Services
             {
                 Console.WriteLine($"\n{ex}\n НЕВОЗМОЖНО ПОЛУЧИТЬ СОВЕТ id({id}) ИЗ БД");
                 return null;
-            }   
+            }
         }
 
         public async Task<(List<KnowledgeItem> Items, int TotalCount)> GetAllKnowledgeItemsAsync(
@@ -44,7 +44,7 @@ namespace ChatBotInpadServer.Services
                 // Фильтрация по категории
                 if (!string.IsNullOrEmpty(category))
                     query = query.Where(ki => ki.Category == category);
-                
+
                 // Поиск по тексту
                 if (!string.IsNullOrEmpty(searchQuery))
                 {
@@ -190,7 +190,7 @@ namespace ChatBotInpadServer.Services
             }
             catch (Exception ex)
             {
-               Console.WriteLine("ОШИБКА ПРИ ПОЛУЧЕНИИ ТЕГОВ");
+                Console.WriteLine("ОШИБКА ПРИ ПОЛУЧЕНИИ ТЕГОВ");
                 return new List<string>();
             }
         }
@@ -247,7 +247,7 @@ namespace ChatBotInpadServer.Services
             }
             catch (Exception ex)
             {
-               Console.WriteLine($"ОШИБКА ПОИСКА ПО ЗАПРОСУ: {userQuery}");
+                Console.WriteLine($"ОШИБКА ПОИСКА ПО ЗАПРОСУ: {userQuery}");
                 return null;
             }
         }
@@ -291,4 +291,21 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        public async Task<List<string>> GetAllCategoriesAsync()
+        {
+            try
+            {
+                return await db.KnowledgeItems
+                    .Select(ki => ki.Category)
+                    .Distinct()
+                    .OrderBy(category => category)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ОШИБКА ПРИ ПОЛУЧЕНИИ КАТЕГОРИЙ!");
+                return new List<string>();
+            }
+        }
     }
+}

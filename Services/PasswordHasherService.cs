@@ -1,6 +1,6 @@
 ﻿using BCrypt.Net;
 
-namespace ChatBot_Inpad_server.Services
+namespace ChatBotInpadServer.Services
 {
     public static class PasswordHasherService
     {

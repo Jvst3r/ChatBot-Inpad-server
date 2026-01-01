@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChatBot_Inpad_server.Data.Models
+namespace ChatBotInpadServer.Data.Models
 {
     public class Admin
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ChatBot_Inpad_server.Data.Models;
+using ChatBotInpadServer.Data.Models;
 
 namespace ChatBotInpadserver.Data.DataBase
 {

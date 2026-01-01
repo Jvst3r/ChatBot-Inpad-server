@@ -25,7 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSingleton<ITelegramBotService, TelegramBotService>();
 builder.Services.AddHostedService<TelegramBotBackgroundService>();
 //бнр рср дн онярпнемхъ щйгелокъпю WebApplication мсфмн мюярпнхрэ CORS,
-//врнаш тпнмр-опхкнфемхе лнцкн пюанрюрэ я мюьхл аейемд-опхкнфемхе
+//врнаш тпнмр-опхкнфемхе лнцкн пюанрюрэ я мюьхл аейемд-опхкнфемхел
 
 
 //Я ОНЛНЫЭЧ builder`a ЯНГДЮ╦Л ЩЙГЕЛОКЪП ЙКЮЯЯЮ WebApplication (РН ЕЯРЭ МЮЬЕ ОПХКНФЕМХЕ)

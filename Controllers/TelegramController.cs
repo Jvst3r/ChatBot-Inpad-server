@@ -3,7 +3,7 @@ using Services;
 using Telegram.Bot.Polling;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using ChatBot_Inpad_server.Data;
+using ChatBotInpadServer.Data;
 
 [ApiController]
 [Route("api/telegram")]

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ChatBot_Inpad_server.Data.Models
+namespace ChatBotInpadServer.Data.Models
 {
     public class ChatMessage
     {

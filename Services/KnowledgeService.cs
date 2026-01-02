@@ -16,6 +16,11 @@ namespace ChatBotInpadServer.Services
             db = _db;
         }
 
+        /// <summary>
+        /// По id отдаёт совет из БД
+        /// </summary>
+        /// <param name="id">Уникальный идентификатор</param>
+        /// <returns></returns>
         public async Task<KnowledgeItem?> GetKnowledgeItemAsync(int id)
         {
             try
@@ -31,6 +36,14 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Отдаёт список советов с пагинацией(сортировка по страницам)
+        /// </summary>
+        /// <param name="page">Номер страницы</param>
+        /// <param name="pageSize">Размер страницы</param>
+        /// <param name="category">Категория</param>
+        /// <param name="searchQuery">Введенный запрос</param>
+        /// <returns>Пустой список при ошибке с count = 0</returns>
         public async Task<(List<KnowledgeItem> Items, int TotalCount)> GetAllKnowledgeItemsAsync(
             int page = 1,
             int pageSize = 20,
@@ -73,6 +86,11 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Добавляет в БД новый совет
+        /// </summary>
+        /// <param name="ki">Knowledge Item</param>
+        /// <returns>null при ошибке, ki при успехе</returns>
         public async Task<KnowledgeItem?> CreateNewKnowledgeItemAsync(KnowledgeItem ki)
         {
             try
@@ -92,6 +110,12 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Изменяет СУЩЕСТВУЮЩИЙ совет из БД
+        /// </summary>
+        /// <param name="id">Id совета</param>
+        /// <param name="UpdatedItem">Обновленная версия совета УЖЕ С ИЗМЕНЕНИЯМИ</param>
+        /// <returns></returns>
         public async Task<KnowledgeItem?> UpdateKnowledgeItemAsync(int id, KnowledgeItem UpdatedItem)
         {
             try
@@ -120,6 +144,11 @@ namespace ChatBotInpadServer.Services
                 return null;
             }
         }
+        /// <summary>
+        /// Удаляет из БД совет по ID. 
+        /// </summary>
+        /// <param name="id">Id совета, который нужно удалить</param>
+        /// <returns>Возвращает true если совет удалён, false если нет.</returns>
         public async Task<bool> DeleteKnowledgeItemAsync(int id)
         {
             try
@@ -127,7 +156,7 @@ namespace ChatBotInpadServer.Services
                 var item = await GetKnowledgeItemAsync(id);
                 if (item == null)
                 {
-                    Console.WriteLine($"СОВЕТ ДЛЯ УДАЛЕНИЯ НЕ НАЙДЕН, id({id})!!!")
+                    Console.WriteLine($"СОВЕТ ДЛЯ УДАЛЕНИЯ НЕ НАЙДЕН, id({id})!!!");
                     return false;
                 }
 
@@ -143,6 +172,13 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tags">Строка с тегами через разделители</param>
+        /// <param name="page">Номер страницы</param>
+        /// <param name="pageSize">Размер страниц</param>
+        /// <returns>Найденные вопросы с тегами</returns>
         public async Task<List<KnowledgeItem>> SearchByTagsAsync(string[] tags, int page = 1, int pageSize = 20)
         {
             try
@@ -170,6 +206,10 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Возвращает все существующие теги
+        /// </summary>
+        /// <returns>Возвращает все существующие теги</returns>
         public async Task<List<string>> GetAllTagsAsync()
         {
             try
@@ -195,7 +235,12 @@ namespace ChatBotInpadServer.Services
             }
         }
 
-        // Поиск лучшего совпадения для пользовательского запроса
+        
+        /// <summary>
+        /// Метод для поиска совета по запросу пользователя
+        /// </summary>
+        /// <param name="userQuery">Текст запроса</param>
+        /// <returns>Наиболее подходящий совет по тексту.Null при ошибке. </returns>
         public async Task<KnowledgeItem?> SearchByQueryAsync(string userQuery)
         {
             try
@@ -252,6 +297,11 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Увеличивает каунтер у совета
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>True - увеличен каунтер,false - ошибка</returns>
         public async Task<bool> IncrementUseCountAsync(int id)
         {
             try
@@ -273,6 +323,13 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Возвращает все советы из категории( с пагинацией )
+        /// </summary>
+        /// <param name="category">Нужная категория</param>
+        /// <param name="page">Номер страницы</param>
+        /// <param name="pageSize">Размер страницы</param>
+        /// <returns></returns>
         public async Task<List<KnowledgeItem>> GetItemsByCategoryAsync(string category, int page = 1, int pageSize = 20)
         {
             try
@@ -291,6 +348,10 @@ namespace ChatBotInpadServer.Services
             }
         }
 
+        /// <summary>
+        /// Даёт список всех категорий из БД
+        /// </summary>
+        /// <returns>Список категорий, при ошибке - пустой список</returns>
         public async Task<List<string>> GetAllCategoriesAsync()
         {
             try

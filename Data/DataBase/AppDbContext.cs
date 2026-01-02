@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ChatBotInpadServer.Data.Models;
+using ChatBotInpadServer.Services;
 
 namespace ChatBotInpadserver.Data.DataBase
 {
@@ -223,7 +224,7 @@ namespace ChatBotInpadserver.Data.DataBase
                 new Admin
                 {
                     Email = "admin@example.com",
-                    PasswordHash = "passwordHash",
+                    PasswordHash = PasswordHasherService.GetHash("Password"),
                     LastLoginAt = null
                 });
             modelBuilder.Entity<KnowledgeItem>().HasData(

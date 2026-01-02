@@ -1,20 +1,33 @@
 // создаём builder статическим методом из класса WebApplication
 using ChatBotInpadserver.Data.DataBase;
+using ChatBotInpadServer.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 //настраиваем будущее приложение
-builder.Services.AddControllers(); // добавляем поддержку endpoint`ов, то есть тех самых API-шек
-builder.Services.AddEndpointsApiExplorer(); // нужно для работы Swagger`a
-builder.Services.AddSwaggerGen(); // добавляем генерацию документации с помощью Swagger
-// builder.Services.AddScoped<ITelegramBotService,
-// TelegramBotService>(); //подключение собственного сервиса для обработки вебхуков от Телеграмма
+// Сервис для работы с базой знаний
+builder.Services.AddScoped<KnowledgeService>();
+
+// Сервис для хеширования паролей
+builder.Services.AddSingleton<PasswordHasherService>();
+
+// Сервисы для Telegram бота
+builder.Services.AddSingleton<ITelegramBotService, TelegramBotService>();
+builder.Services.AddHostedService<TelegramBotBackgroundService>();
+
+// Сервисы для Revit`a
+//builder.Services.AddSingleton<IRevitService, RevitBotService>();
+
+
+// Сервис для работы с пользователями хз надо ли нам вообще
+//builder.Services.AddScoped<UserService>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 
 
@@ -22,14 +35,42 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //    PollingTelegramService>(); // подключение собственного ВРЕМЕННОГО сервиса для ЗАПРАШИВАНИЯ обновлений от Телеграмма
 //
 
-builder.Services.AddSingleton<ITelegramBotService, TelegramBotService>();
-builder.Services.AddHostedService<TelegramBotBackgroundService>();
+
 //ВОТ ТУТ ДО ПОСТРОЕНИЯ ЭКЗЕМПЛЯРА WebApplication НУЖНО НАСТРОИТЬ CORS,
 //ЧТОБЫ ФРОНТ-ПРИЛОЖЕНИЕ МОГЛО РАБОТАТЬ С НАШИМ БЕКЕНД-ПРИЛОЖЕНИЕМ
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactClient",
+        policy =>
+        {
+            policy.WithOrigins(
+                    "http://localhost:3000", // React dev server
+                    "http://localhost:5173", // Web dev server
+                    "https://localhost:3000",
+                    "https://localhost:5173")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
+});
 
 //с помощью builder`a создаём экземпляр класса WebApplication (то есть наше приложение)
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<AppDbContext>();
+
+        Console.WriteLine("База данных успешно создана и заполнена");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка при создании БД: {ex.Message}");
+    }
+}
 
 //Красивый вывод в хост
 app.MapGet("/", () => "Bot is running!");

@@ -2,7 +2,7 @@
 
 namespace ChatBotInpadServer.Services
 {
-    public static class PasswordHasherService
+    public class PasswordHasherService
     {
         public static string GetHash(string password)
         {

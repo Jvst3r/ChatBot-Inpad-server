@@ -8,10 +8,10 @@ namespace ChatBotInpadServer.Services
 {
     // заготовка обработчика БД
     // через него будет происходить изменения БД
-    public class DataBaseHandler
+    public class KnowledgeService
     {
         public AppDbContext db;
-        public DataBaseHandler(AppDbContext _db)
+        public KnowledgeService(AppDbContext _db)
         {
             db = _db;
         }

@@ -7,6 +7,11 @@ using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+
+builder.Services.AddControllers(); // Поддержка контроллеров
+builder.Services.AddEndpointsApiExplorer(); // Для Swagger
+builder.Services.AddSwaggerGen(); // Документация API
 //настраиваем будущее приложение
 // Сервис для работы с базой знаний
 builder.Services.AddScoped<KnowledgeService>();
@@ -63,8 +68,10 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = services.GetRequiredService<AppDbContext>();
-
-        Console.WriteLine("База данных успешно создана и заполнена");
+        if (db.Database.CanConnect())
+            Console.WriteLine("База данных успешно создана и заполнена");
+        else
+            Console.WriteLine("База данных не работает");
     }
     catch (Exception ex)
     {
@@ -74,7 +81,7 @@ using (var scope = app.Services.CreateScope())
 
 //Красивый вывод в хост
 app.MapGet("/", () => "Bot is running!");
-app.MapControllers();
+//app.MapControllers();
 
 
 // Подключает документацию на этапе РАЗРАБОТКИ
@@ -86,7 +93,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection(); // сложно короче, но если приходит HTTP-запрос, то перенаправляет его на HTPPS-порт (защищённый)
 
-app.UseAuthorization(); //если мы будем использовать авторизацию, то эта команда нужна (разрешает авторизацию)
+//app.UseAuthorization(); //если мы будем использовать авторизацию, то эта команда нужна (разрешает авторизацию)
 
 app.MapControllers(); //связываем Controllers с реальными адресами типо нам придёт:
                       //GET: ourserver/telegram/task/{id}

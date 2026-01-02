@@ -68,6 +68,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = services.GetRequiredService<AppDbContext>();
+        db.Database.Migrate();
         if (db.Database.CanConnect())
             Console.WriteLine("База данных успешно создана и заполнена");
         else

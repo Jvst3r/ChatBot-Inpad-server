@@ -30,4 +30,16 @@ namespace ChatBotInpadserver.Data.DTOs.WebClientDTOs
         [Required]
         public string Password { get; set; }
     }
+
+    public class LoginAdminResponse
+    {
+        [Required]
+        public bool Success { get; set; }
+        [Required]
+        public string Message { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+        
+    }
+
 }

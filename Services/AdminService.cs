@@ -39,7 +39,7 @@ namespace ChatBot_Inpad_server.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"ex.Message\n ОШИБКА АВТОРИЗАЦИИ ПОЛЬЗОВАТЕЛЯ");
-                return new LoginAdminResponse() { Success = false, Message = "Возникла непредвиденная ошибка" }
+                return new LoginAdminResponse() { Success = false, Message = "Возникла непредвиденная ошибка" };
             }
 
             

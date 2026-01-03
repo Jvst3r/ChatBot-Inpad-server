@@ -220,11 +220,12 @@ namespace ChatBotInpadserver.Data.DataBase
         //заполнение БД при включении сервера
         private void SeedData(ModelBuilder modelBuilder)
         {
+            PasswordHasherService passwordHasherService = new PasswordHasherService();
             modelBuilder.Entity<Admin>().HasData(
                 new Admin
                 {
                     Email = "admin@example.com",
-                    PasswordHash = PasswordHasherService.GetHash("Password"),
+                    PasswordHash = passwordHasherService.GetHash("Password"),
                     LastLoginAt = null
                 });
             modelBuilder.Entity<KnowledgeItem>().HasData(

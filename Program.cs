@@ -1,9 +1,12 @@
 // создаём builder статическим методом из класса WebApplication
+using ChatBot_Inpad_server.Services;
 using ChatBotInpadserver.Data.DataBase;
+using ChatBotInpadServer.Data;
 using ChatBotInpadServer.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Services;
+using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -12,33 +15,29 @@ var configuration = builder.Configuration;
 builder.Services.AddControllers(); // Поддержка контроллеров
 builder.Services.AddEndpointsApiExplorer(); // Для Swagger
 builder.Services.AddSwaggerGen(); // Документация API
-//настраиваем будущее приложение
+
+
 // Сервис для работы с базой знаний
 builder.Services.AddScoped<KnowledgeService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AdminService>();
 
 // Сервис для хеширования паролей
 builder.Services.AddSingleton<PasswordHasherService>();
 
 // Сервисы для Telegram бота
-builder.Services.AddSingleton<ITelegramBotService, TelegramBotService>();
+builder.Services.AddSingleton<ITelegramBotClient>(sp => new TelegramBotClient(Secrets.TgBotToken));
+builder.Services.AddTransient<ITelegramBotService, TelegramBotService>();
 builder.Services.AddHostedService<TelegramBotBackgroundService>();
 
 // Сервисы для Revit`a
 //builder.Services.AddSingleton<IRevitService, RevitBotService>();
 
 
-// Сервис для работы с пользователями хз надо ли нам вообще
-//builder.Services.AddScoped<UserService>();
-
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-
-
-
-//builder.Services.AddScoped<ITelegramBotService, Незнаю зачем было сразу кидать все в кучу
-//    PollingTelegramService>(); // подключение собственного ВРЕМЕННОГО сервиса для ЗАПРАШИВАНИЯ обновлений от Телеграмма
-//
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")),
+    ServiceLifetime.Scoped);
 
 
 //ВОТ ТУТ ДО ПОСТРОЕНИЯ ЭКЗЕМПЛЯРА WebApplication НУЖНО НАСТРОИТЬ CORS,
@@ -70,7 +69,8 @@ using (var scope = app.Services.CreateScope())
         var db = services.GetRequiredService<AppDbContext>();
         db.Database.Migrate();
         if (db.Database.CanConnect())
-            Console.WriteLine("База данных успешно создана и заполнена");
+            Console.WriteLine("База данных успешно создана и заполнена\n" +
+                $"Количество советов в таблице: {db.KnowledgeItems.Count()}");
         else
             Console.WriteLine("База данных не работает");
     }

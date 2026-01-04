@@ -22,7 +22,8 @@ namespace ChatBotInpadserver.Controllers
         {
             return Ok("Работает");
         }
-        
+
+        [HttpPost("login")]        
         public async Task<IActionResult> LoginAdmin(string Email, string Password)
         {
             var dto = await adminService.LoginAsync(Email, Password);

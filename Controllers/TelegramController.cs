@@ -1,74 +1,92 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Services;
-using Telegram.Bot.Polling;
+﻿// Services/TelegramBotBackgroundService.cs
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
-using Telegram.Bot.Types;
-using ChatBotInpadServer.Data;
+using Telegram.Bot.Polling;
+using Telegram.Bot.Types.Enums;
 
-[ApiController]
-[Route("api/telegram")]
-public class TelegramWebhookController : ControllerBase
+namespace Services
 {
-    private readonly ITelegramBotService botService;
-
-    //Внедрение зависимости, всё по книжечке
-    public TelegramWebhookController(ITelegramBotService _botService)
+    public class TelegramBotBackgroundService : BackgroundService
     {
-        botService = _botService;
-    }
+        private readonly IServiceProvider serviceProvider;
+        private readonly ITelegramBotClient botClient;
 
-
-    //Суть метода - принимать вебхуки от Телеграмма (а как я понял там идут POST-методы)
-    //и вызывать сервис по обработке (пока назвал его TelegramHandler)
-    [HttpPost]
-    public async Task<IActionResult> HandleWebhookAsync([FromBody] Update update)
-    {
-        try
+        public TelegramBotBackgroundService(
+            IServiceProvider serviceProvider,
+            ITelegramBotClient botClient)
         {
-            await botService.HandleMessageAsync(update);
-            return Ok();
+            this.serviceProvider = serviceProvider;
+            this.botClient = botClient;
         }
-        catch (Exception ex)
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return StatusCode(500);
-        }
-    }
-}
-//Бот работает в данный момент от этого класса TelegramBotBackgroundService
-//TelegramWebhoolController пока оставил мб еще пригодится
-public class TelegramBotBackgroundService : BackgroundService
-{
-    private readonly TelegramBotClient _botClient;
-    private readonly ITelegramBotService _botService;
-    private readonly ILogger<TelegramBotBackgroundService> _logger;
+            Console.WriteLine("Telegram Bot Background Service запущен");
 
-    public TelegramBotBackgroundService(
-        ITelegramBotService botService,
-        ILogger<TelegramBotBackgroundService> logger)
-    {
-        _botService = botService;
-        _logger = logger;
-        _botClient = new TelegramBotClient(Secrets.TgBotToken);
-    }
-    //тут все просто, обработка ошибок и вывод инфы о работе бота
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        var receiverOptions = new ReceiverOptions();
+            using var cts = new CancellationTokenSource();
 
-        _botClient.StartReceiving(
-            async (client, update, ct) => await _botService.HandleMessageAsync(update),
-            (client, exception, ct) =>
+            // Настройки получения обновлений
+            var receiverOptions = new ReceiverOptions
             {
-                _logger.LogError(exception, "Telegram error");
-                return Task.CompletedTask;
-            },
-            receiverOptions,
-            stoppingToken
-        );
+                AllowedUpdates = Array.Empty<UpdateType>(),
+                DropPendingUpdates = true, // Вместо ThrowPendingUpdates в новых версиях
+            };
 
-        var me = await _botClient.GetMe();
-        _logger.LogInformation($"Бот @{me.Username} запущен!");
+            // Запускаем обработчик обновлений
+            botClient.StartReceiving(
+              updateHandler: HandleUpdateAsync,
+              errorHandler: HandlePollingErrorAsync
+          );
 
-        await Task.Delay(Timeout.Infinite, stoppingToken);
+            // Получаем информацию о боте
+            try
+            {
+                var me = await botClient.GetMe(cancellationToken: stoppingToken);
+                Console.WriteLine($"Бот @{me.Username} запущен и готов к работе!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при получении информации о боте: {ex.Message}");
+            }
+
+            // Ждем отмены
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
+
+        private async Task HandleUpdateAsync(ITelegramBotClient botClient,
+            Telegram.Bot.Types.Update update, CancellationToken cancellationToken)
+        {
+            // СОЗДАЕМ НОВЫЙ SCOPE ДЛЯ КАЖДОГО СООБЩЕНИЯ
+            using (var scope = serviceProvider.CreateScope())
+            {
+                try
+                {
+                    // Получаем сервисы из SCOPE (они будут Scoped)
+                    var botService = scope.ServiceProvider.GetRequiredService<ITelegramBotService>();
+                    await botService.HandleMessageAsync(update);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" Ошибка обработки обновления: {ex.Message}");
+                }
+            }
+        }
+
+        private Task HandlePollingErrorAsync(ITelegramBotClient botClient,
+            Exception exception, CancellationToken cancellationToken)
+        {
+            Console.WriteLine($" Ошибка Telegram API: {exception.Message}");
+            return Task.CompletedTask;
+        }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine(" Telegram Bot Background Service остановлен");
+            await base.StopAsync(cancellationToken);
+        }
     }
 }

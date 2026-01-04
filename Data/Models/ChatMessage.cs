@@ -28,7 +28,7 @@ namespace ChatBotInpadServer.Data.Models
         public virtual KnowledgeItem? KnowledgeItem { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         //для удобства метод
         public bool IsBotMessage => !IsFromUser;

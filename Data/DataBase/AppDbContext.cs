@@ -237,8 +237,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "Для начала работы просто отправьте любое сообщение боту. Он ответит на ваши вопросы и поможет с настройками.",
                     Tags = "начало,помощь,бот",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -248,8 +248,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "1. Откройте вкладку 'Architecture'\n2. Нажмите на инструмент 'Wall'\n3. Выберите тип стены\n4. Укажите точки размещения на плане",
                     Tags = "revit,стена,создание",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -259,8 +259,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "🔒 Всегда проверяйте сертификаты сервера перед подключением к VPN.",
                     Tags = "vpn,безопасность,сертификаты",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -270,8 +270,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "🚀 Выбирайте сервер ближайший к вашему местоположению для лучшей скорости.",
                     Tags = "vpn,сервер,скорость,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -281,8 +281,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📡 Всегда используйте VPN при подключении к публичным Wi-Fi сетям.",
                     Tags = "vpn,безопасность,wi-fi,публичные сети",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -292,8 +292,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📊 Если скорость низкая, попробуйте переключиться на другой сервер или протокол.",
                     Tags = "vpn,скорость,сервер,протокол,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -303,8 +303,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Мой совет это - включить акселератор.",
                     Tags = "советы,производительность,акселератор,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -314,8 +314,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Можете проверить диск C.",
                     Tags = "советы,диск,память,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -325,8 +325,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Попробуйте закрыть вкладки браузера.",
                     Tags = "советы,браузер,память,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -336,8 +336,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Незабудьте проверить рабочие наборы.",
                     Tags = "revit,советы,рабочие наборы,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -347,8 +347,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Советую удалить неиспользуемые группы, виды и DWG.",
                     Tags = "revit,советы,очистка,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -358,8 +358,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Так же советую проверить вес файла хранилища.",
                     Tags = "revit,советы,память,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -369,8 +369,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Отключите аналитические данные.",
                     Tags = "revit,советы,аналитика,оптимизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 },
                 new KnowledgeItem
                 {
@@ -380,8 +380,8 @@ namespace ChatBotInpadserver.Data.DataBase
                     AnswerText = "📱 Используйте корпоративные семейства.",
                     Tags = "revit,советы,семейства,стандартизация",
                     UseCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 }
             );
 
